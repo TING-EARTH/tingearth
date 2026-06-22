@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TING EARTH — A Assembleia do Mundo Livre</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=EB+Garamond:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f0f0f;
+      --bg2:      #161616;
+      --bg3:      #1e1e1e;
+      --gold:     #c8a96e;
+      --gold-dim: #9a7d4e;
+      --red:      #c0392b;
+      --text:     #e8e0d0;
+      --muted:    #888070;
+      --border:   #2a2820;
+      --green:    #2e7d4f;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+    .topbar-actions a {
+      margin-left: 20px;
+      color: var(--gold);
+      font-weight: 500;
+      letter-spacing: .06em;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    .topbar-actions a:hover { color: var(--text); }
+
+    /* ── MASTHEAD ── */
+    .masthead {
+      text-align: center;
+      padding: 44px 20px 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .masthead h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(42px, 8vw, 88px);
+      font-weight: 900;
+      letter-spacing: .18em;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .masthead h1 span { color: var(--text); }
+    .masthead .tagline {
+      margin-top: 10px;
+      font-size: 11px;
+      letter-spacing: .3em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    nav a {
+      padding: 14px 28px;
+      font-size: 13px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color .2s;
+      position: relative;
+    }
+    nav a:hover, nav a.active { color: var(--gold); }
+    nav a.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 20px; right: 20px;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    /* ── BEMA TICKER ── */
+    .bema-ticker {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      overflow: hidden;
+    }
+    .bema-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      color: var(--gold);
+      text-transform: uppercase;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bema-label::before {
+      content: '▶';
+      color: var(--gold);
+      font-size: 8px;
+    }
+    .ticker-wrap { overflow: hidden; flex: 1; }
+    .ticker-text {
+      display: inline-block;
+      white-space: nowrap;
+      animation: ticker 28s linear infinite;
+      font-size: 13px;
+      color: var(--text);
+    }
+    @keyframes ticker {
+      0%   { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* ── MAIN GRID ── */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 0;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ── LEFT COLUMN ── */
+    .col-left { border-right: 1px solid var(--border); padding-right: 40px; }
+
+    /* Featured / Rostrum */
+    .featured { padding: 36px 0 28px; border-bottom: 1px solid var(--border); }
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      border: 1px solid var(--gold-dim);
+      color: var(--gold-dim);
+      margin-bottom: 14px;
+    }
+    .featured h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .featured p {
+      font-family: 'EB Garamond', serif;
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .tag-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .tag {
+      padding: 4px 12px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .tag-rostrum { background: var(--bg3); color: var(--gold); border: 1px solid var(--gold-dim); }
+    .tag-politica { background: var(--green); color: #fff; }
+    .tag-row .time { font-size: 12px; color: var(--muted); }
+
+    /* Últimas */
+    .ultimas { padding: 28px 0; }
+    .news-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .news-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 18px;
+      transition: border-color .2s;
+      cursor: pointer;
+    }
+    .news-card:hover { border-color: var(--gold-dim); }
+    .card-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .card-label.politica { color: #6dbf8a; }
+    .card-label.economia { color: #7fb3d3; }
+    .card-label.locked { color: var(--gold); }
+    .news-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .card-meta { font-size: 11px; color: var(--muted); }
+    .card-exclusive { font-size: 11px; color: var(--gold-dim); margin-top: 6px; }
+
+    /* ── RIGHT COLUMN ── */
+    .col-right { padding-left: 32px; }
+
+    /* BEMA urgentes */
+    .bema-section { padding: 28px 0 20px; border-bottom: 1px solid var(--border); }
+    .bema-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: border-color .2s;
+    }
+    .bema-card:hover { border-left-color: var(--text); }
+    .bema-card-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bema-card-label::before { content: '⚡'; font-size: 11px; }
+    .bema-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--text);
+    }
+
+    /* Tabula do dia */
+    .tabula-section { padding: 20px 0; border-bottom: 1px solid var(--border); }
+    .tabula-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tabula-item {
+      display: flex;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .tabula-item:last-child { border-bottom: none; }
+    .tabula-num {
+      font-size: 11px;
+      color: var(--muted);
+      min-width: 20px;
+      padding-top: 2px;
+    }
+    .tabula-item p {
+      font-size: 14px;
+      line-height: 1.4;
+      color: var(--text);
+    }
+    .tabula-item:hover p { color: var(--gold); }
+
+    /* CTA Assine */
+    .cta-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 24px 20px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .cta-box h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .cta-box p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+    .cta-btn {
+      display: block;
+      background: var(--gold);
+      color: var(--bg);
+      padding: 12px 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 10px;
+      transition: background .2s;
+      cursor: pointer;
+    }
+    .cta-btn:hover { background: var(--text); }
+    .cta-price { font-size: 11px; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1140px;
+      margin: 40px auto 0;
+    }
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      letter-spacing: .15em;
+      color: var(--gold);
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-bottom {
+      text-align: center;
+      padding: 16px 20px 28px;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .col-left { border-right: none; padding-right: 0; }
+      .col-right { padding-left: 0; border-top: 1px solid var(--border); padding-top: 24px; }
+      .news-grid { grid-template-columns: 1fr; }
+      .topbar { padding: 10px 20px; }
+      nav a { padding: 12px 14px; font-size: 11px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <span id="data-hoje"></span>
+    <div class="topbar-actions">
+      <a href="https://tingearth.substack.com/sign-in" target="_blank">Entrar</a>
+      <a href="https://tingearth.substack.com/subscribe" target="_blank">Assinar</a>
+    </div>
+  </div>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <h1>TING<span> · </span>EARTH</h1>
+    <p class="tagline">A Assembleia do Mundo Livre</p>
+  </header>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="active">Início</a>
+    <a href="https://tingearth.substack.com" target="_blank">Tabula</a>
+    <a href="https://tingearth.substack.com/subscribe" target="_blank">Rostrum</a>
+    <a href="#bema">Bema</a>
+    <a href="#loja">Loja</a>
+    <a href="https://t.me" target="_blank">Canal VIP</a>
+  </nav>
+
+  <!-- BEMA TICKER -->
+  <div class="bema-ticker">
+    <span class="bema-label">Bema</span>
+    <div class="ticker-wrap">
+      <span class="ticker-text">
+        Câmara aprova projeto polêmico — análise completa no Rostrum de hoje &nbsp;&nbsp;·&nbsp;&nbsp;
+        TSE confirma datas do calendário eleitoral para outubro de 2026 &nbsp;&nbsp;·&nbsp;&nbsp;
+        Novo partido oficializa candidatura à presidência com nome surpresa &nbsp;&nbsp;·&nbsp;&nbsp;
+        STF retoma julgamento sobre redes sociais e desinformação
+      </span>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+
+    <!-- COLUNA ESQUERDA -->
+    <div class="col-left">
+
+      <!-- FEATURED ROSTRUM -->
+      <section class="featured">
+        <div class="section-label">Rostrum — Análise Exclusiva</div>
+        <div class="badge">□ Assinantes</div>
+        <h2>O que ninguém está explicando sobre as eleições de 2026</h2>
+        <p>A disputa vai muito além dos candidatos. Entenda os bastidores, os financiadores e o que realmente está em jogo para os próximos quatro anos.</p>
+        <div class="tag-row">
+          <span class="tag tag-rostrum">Rostrum</span>
+          <span class="tag tag-politica">Política</span>
+          <span class="time">Hoje, 09h14</span>
+        </div>
+      </section>
+
+      <!-- ÚLTIMAS -->
+      <section class="ultimas">
+        <div class="section-label">Últimas — Acesso Livre</div>
+        <div class="news-grid">
+
+          <div class="news-card">
+            <div class="card-label">Tabula · Hoje</div>
+            <h3>As 5 notícias que você precisa saber esta manhã</h3>
+            <div class="card-meta">Acesso livre · 07h00</div>
+          </div>
+
+          <div class="news-card">
+            <div class="card-label politica">Política</div>
+            <h3>Pesquisa eleitoral traz surpresa em três estados do nordeste</h3>
+            <div class="card-meta">Acesso livre · 08h30</div>
+          </div>
+
+          <div class="news-card">
+            <div class="card-label economia">Economia</div>
+            <h3>Dólar reage a declaração do ministério — o que esperar</h3>
+            <div class="card-meta">Acesso livre · 08h55</div>
+          </div>
+
+          <div class="news-card">
+            <div class="card-label locked">Rostrum 🔒</div>
+            <h3>Tecnologia e vigilância: a pauta que os candidatos evitam</h3>
+            <div class="card-exclusive">Exclusivo assinantes</div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- COLUNA DIREITA -->
+    <div class="col-right" id="bema">
+
+      <!-- BEMA URGENTES -->
+      <section class="bema-section">
+        <div class="bema-card">
+          <div class="bema-card-label">Bema — Urgente</div>
+          <h4>TSE confirma datas do calendário eleitoral para outubro de 2026</h4>
+        </div>
+        <div class="bema-card">
+          <div class="bema-card-label">Bema</div>
+          <h4>Novo partido oficializa candidatura à presidência com nome surpresa</h4>
+        </div>
+      </section>
+
+      <!-- TABULA DO DIA -->
+      <section class="tabula-section">
+        <div class="tabula-title">📋 Tabula de hoje</div>
+        <div class="tabula-item">
+          <span class="tabula-num">01</span>
+          <p>Governo anuncia pacote econômico antes das eleições</p>
+        </div>
+        <div class="tabula-item">
+          <span class="tabula-num">02</span>
+          <p>STF retoma julgamento sobre redes sociais e desinformação</p>
+        </div>
+        <div class="tabula-item">
+          <span class="tabula-num">03</span>
+          <p>Candidatos lideram nas redes: quem está ganhando a batalha digital</p>
+        </div>
+        <div class="tabula-item">
+          <span class="tabula-num">04</span>
+          <p>Inflação cede, mas analistas pedem cautela</p>
+        </div>
+      </section>
+
+      <!-- CTA ASSINE -->
+      <div class="cta-box" id="loja">
+        <h4>Assine o TING EARTH</h4>
+        <p>Acesse o Rostrum, o Canal VIP no Telegram e análises exclusivas semanais.</p>
+        <a class="cta-btn" href="https://tingearth.substack.com/subscribe" target="_blank">Assinar agora</a>
+        <div class="cta-price">A partir de R$ 19,90/mês · cancele quando quiser</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">TING·EARTH</div>
+    <div class="footer-links">
+      <a href="#">Sobre</a>
+      <a href="#">Contato</a>
+      <a href="#">Termos</a>
+      <a href="https://t.me" target="_blank">Telegram</a>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    © 2026 TING EARTH — A Assembleia do Mundo Livre. Todos os direitos reservados.
+  </div>
+
+  <script>
+    // Data em português
+    const dias = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+    const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    const hoje = new Date();
+    document.getElementById('data-hoje').textContent =
+      `${dias[hoje.getDay()]}, ${hoje.getDate()} de ${meses[hoje.getMonth()]} de ${hoje.getFullYear()}`;
+  </script>
+
+</body>
+</html>
