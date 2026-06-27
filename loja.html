@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loja — TING EARTH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=EB+Garamond:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f0f0f;
+      --bg2:      #161616;
+      --bg3:      #1e1e1e;
+      --gold:     #c8a96e;
+      --gold-dim: #9a7d4e;
+      --text:     #e8e0d0;
+      --muted:    #888070;
+      --border:   #2a2820;
+      --green:    #2e7d4f;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+
+    /* TOPBAR */
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 40px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+    .topbar-actions a { margin-left: 20px; color: var(--gold); font-weight: 500; letter-spacing: .06em; font-size: 12px; text-transform: uppercase; }
+    .topbar-actions a:hover { color: var(--text); }
+
+    /* MASTHEAD */
+    .masthead { text-align: center; padding: 36px 20px 24px; border-bottom: 1px solid var(--border); }
+    .masthead img { height: 90px; width: auto; }
+    .masthead .tagline { margin-top: 8px; font-size: 11px; letter-spacing: .3em; color: var(--muted); text-transform: uppercase; }
+
+    /* NAV */
+    nav { display: flex; justify-content: center; border-bottom: 1px solid var(--border); background: var(--bg); }
+    nav a { padding: 14px 28px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); transition: color .2s; position: relative; }
+    nav a:hover { color: var(--gold); }
+    nav a.active { color: var(--gold); }
+    nav a.active::after { content: ''; position: absolute; bottom: 0; left: 20px; right: 20px; height: 2px; background: var(--gold); }
+
+    /* PAGE HEADER */
+    .page-header { max-width: 960px; margin: 48px auto 0; padding: 0 20px 32px; border-bottom: 1px solid var(--border); }
+    .page-header .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 52px); font-weight: 900; color: var(--text); line-height: 1.1; margin-bottom: 14px; }
+    .page-header p { font-family: 'EB Garamond', serif; font-size: 18px; color: var(--muted); line-height: 1.7; }
+
+    /* EM BREVE BANNER */
+    .em-breve-banner {
+      max-width: 960px; margin: 32px auto 0; padding: 0 20px;
+    }
+    .banner-box {
+      background: var(--bg2); border: 1px solid var(--gold-dim);
+      padding: 28px 32px; display: flex; align-items: center; gap: 20px;
+    }
+    .banner-icon { font-size: 28px; }
+    .banner-text h3 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+    .banner-text p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    /* GRID DE PRODUTOS */
+    .loja-wrap { max-width: 960px; margin: 36px auto 80px; padding: 0 20px; }
+    .loja-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+    /* CARD EM BREVE */
+    .produto-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      display: flex; flex-direction: column; position: relative;
+      transition: border-color .2s;
+    }
+    .produto-card:hover { border-color: var(--gold-dim); }
+
+    .produto-capa {
+      aspect-ratio: 3/4; background: var(--bg3);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      border-bottom: 1px solid var(--border); position: relative;
+      overflow: hidden;
+    }
+    .produto-capa-em-breve {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 12px; padding: 24px;
+      text-align: center;
+    }
+    .produto-capa-em-breve .icone { font-size: 36px; opacity: .4; }
+    .produto-capa-em-breve span {
+      font-size: 10px; font-weight: 600; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .badge-em-breve {
+      position: absolute; top: 12px; right: 12px;
+      background: var(--bg); border: 1px solid var(--gold-dim);
+      color: var(--gold); font-size: 9px; font-weight: 700;
+      letter-spacing: .15em; text-transform: uppercase; padding: 3px 10px;
+    }
+
+    .produto-info { padding: 18px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .produto-categoria { font-size: 10px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: var(--gold-dim); }
+    .produto-titulo { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .produto-desc { font-size: 13px; color: var(--muted); line-height: 1.55; flex: 1; }
+    .produto-rodape { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); margin-top: 4px; }
+    .produto-preco { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--gold); }
+    .produto-preco.em-breve-preco { font-size: 13px; color: var(--muted); font-family: 'Inter', sans-serif; font-weight: 400; }
+    .btn-comprar {
+      padding: 8px 18px; background: var(--gold); color: var(--bg);
+      font-size: 10px; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; transition: background .2s; cursor: pointer;
+      border: none;
+    }
+    .btn-comprar:hover { background: var(--text); }
+    .btn-comprar:disabled, .btn-em-breve {
+      padding: 8px 18px; background: none;
+      border: 1px solid var(--border); color: var(--muted);
+      font-size: 10px; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; cursor: not-allowed;
+    }
+
+    /* SEÇÃO NOTIFICAR */
+    .notificar-wrap { max-width: 960px; margin: 0 auto 80px; padding: 0 20px; }
+    .notificar-box { background: var(--bg2); border: 1px solid var(--border); padding: 40px; text-align: center; }
+    .notificar-box h3 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--gold); margin-bottom: 10px; }
+    .notificar-box p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; max-width: 480px; margin-left: auto; margin-right: auto; }
+    .notificar-form { display: flex; gap: 12px; max-width: 420px; margin: 0 auto; }
+    .notificar-form input {
+      flex: 1; padding: 12px 16px; background: var(--bg3);
+      border: 1px solid var(--border); color: var(--text);
+      font-size: 14px; font-family: 'Inter', sans-serif; outline: none;
+    }
+    .notificar-form input:focus { border-color: var(--gold-dim); }
+    .notificar-form input::placeholder { color: var(--muted); }
+    .btn-notificar {
+      padding: 12px 24px; background: var(--gold); color: var(--bg);
+      border: none; font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; cursor: pointer; transition: background .2s; white-space: nowrap;
+    }
+    .btn-notificar:hover { background: var(--text); }
+    .notificar-ok { display: none; font-size: 13px; color: #6dbf8a; margin-top: 12px; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; max-width: 1140px; margin: 0 auto; }
+    .footer-brand { font-family: 'Playfair Display', serif; font-size: 18px; letter-spacing: .15em; color: var(--gold); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-bottom { text-align: center; padding: 16px 20px 28px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); max-width: 1140px; margin: 0 auto; }
+
+    @media (max-width: 768px) {
+      .loja-grid { grid-template-columns: repeat(2, 1fr); }
+      .notificar-form { flex-direction: column; }
+      .banner-box { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .loja-grid { grid-template-columns: 1fr; }
+      .topbar { padding: 10px 20px; }
+      nav a { padding: 12px 14px; font-size: 11px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <span id="data-hoje"></span>
+    <div class="topbar-actions">
+      <a href="https://tingearth.substack.com/sign-in" target="_blank">Entrar</a>
+      <a href="https://tingearth.substack.com/subscribe" target="_blank">Assinar</a>
+    </div>
+  </div>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <a href="index.html"><img src="logo-tingearth.svg" alt="TING EARTH" /></a>
+    <p class="tagline">A Assembleia do Mundo Livre</p>
+  </header>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="tabula.html">Tabula</a>
+    <a href="rostrum.html">Rostrum</a>
+    <a href="bema.html">Bema</a>
+    <a href="loja.html" class="active">Loja</a>
+    <a href="https://t.me" target="_blank">Canal VIP</a>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="section-tag">Loja — Produtos Digitais</div>
+    <h1>Conhecimento que<br>você leva consigo</h1>
+    <p>Ebooks, guias e análises aprofundadas sobre política, economia e eleições brasileiras. Disponíveis para qualquer pessoa, assinante ou não.</p>
+  </div>
+
+  <!-- BANNER EM BREVE -->
+  <div class="em-breve-banner">
+    <div class="banner-box">
+      <div class="banner-icon">📦</div>
+      <div class="banner-text">
+        <h3>Produtos chegando em breve</h3>
+        <p>A loja está sendo preparada. Os primeiros ebooks serão lançados nas próximas semanas. Cadastre seu email abaixo para ser avisado no lançamento.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRID DE PRODUTOS -->
+  <div class="loja-wrap">
+    <div class="loja-grid">
+
+      <div class="produto-card">
+        <div class="produto-capa">
+          <div class="produto-capa-em-breve">
+            <span class="icone">📘</span>
+            <span>Em breve</span>
+          </div>
+          <span class="badge-em-breve">Em breve</span>
+        </div>
+        <div class="produto-info">
+          <span class="produto-categoria">Política · Ebook</span>
+          <div class="produto-titulo">Guia das Eleições 2026: o que você precisa saber</div>
+          <div class="produto-desc">Um guia completo sobre candidatos, partidos, financiadores e o que realmente está em disputa nas eleições de outubro.</div>
+          <div class="produto-rodape">
+            <span class="produto-preco em-breve-preco">Preço a confirmar</span>
+            <span class="btn-em-breve">Em breve</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="produto-card">
+        <div class="produto-capa">
+          <div class="produto-capa-em-breve">
+            <span class="icone">📗</span>
+            <span>Em breve</span>
+          </div>
+          <span class="badge-em-breve">Em breve</span>
+        </div>
+        <div class="produto-info">
+          <span class="produto-categoria">Economia · Ebook</span>
+          <div class="produto-titulo">Dólar, inflação e eleições: o que o mercado não te conta</div>
+          <div class="produto-desc">Como a economia e a política se cruzam nos anos eleitorais e o que isso significa para o seu bolso e seus investimentos.</div>
+          <div class="produto-rodape">
+            <span class="produto-preco em-breve-preco">Preço a confirmar</span>
+            <span class="btn-em-breve">Em breve</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="produto-card">
+        <div class="produto-capa">
+          <div class="produto-capa-em-breve">
+            <span class="icone">📙</span>
+            <span>Em breve</span>
+          </div>
+          <span class="badge-em-breve">Em breve</span>
+        </div>
+        <div class="produto-info">
+          <span class="produto-categoria">Política · Ebook</span>
+          <div class="produto-titulo">Bastidores do poder: quem financia a política brasileira</div>
+          <div class="produto-desc">Uma investigação sobre os grupos econômicos que financiam campanhas e como isso molda as decisões do governo eleito.</div>
+          <div class="produto-rodape">
+            <span class="produto-preco em-breve-preco">Preço a confirmar</span>
+            <span class="btn-em-breve">Em breve</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NOTIFICAR -->
+  <div class="notificar-wrap">
+    <div class="notificar-box">
+      <h3>Seja o primeiro a saber</h3>
+      <p>Cadastre seu email e avise quando os primeiros produtos estiverem disponíveis. Sem spam, só o que importa.</p>
+      <div class="notificar-form">
+        <input type="email" id="email-input" placeholder="seu@email.com" />
+        <button class="btn-notificar" onclick="notificar()">Avisar-me</button>
+      </div>
+      <div class="notificar-ok" id="notificar-ok">✓ Ótimo! Você será avisado no lançamento.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">TING·EARTH</div>
+    <div class="footer-links">
+      <a href="#">Sobre</a>
+      <a href="#">Contato</a>
+      <a href="#">Termos</a>
+      <a href="https://t.me" target="_blank">Telegram</a>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    © 2026 TING EARTH — A Assembleia do Mundo Livre. Todos os direitos reservados.
+  </div>
+
+  <script>
+    const dias = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+    const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    const hoje = new Date();
+    document.getElementById('data-hoje').textContent =
+      `${dias[hoje.getDay()]}, ${hoje.getDate()} de ${meses[hoje.getMonth()]} de ${hoje.getFullYear()}`;
+
+    function notificar() {
+      const email = document.getElementById('email-input').value;
+      if (email && email.includes('@')) {
+        document.getElementById('notificar-ok').style.display = 'block';
+        document.getElementById('email-input').value = '';
+      }
+    }
+  </script>
+
+</body>
+</html>
