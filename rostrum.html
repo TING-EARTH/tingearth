@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rostrum — TING EARTH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=EB+Garamond:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f0f0f;
+      --bg2:      #161616;
+      --bg3:      #1e1e1e;
+      --gold:     #c8a96e;
+      --gold-dim: #9a7d4e;
+      --text:     #e8e0d0;
+      --muted:    #888070;
+      --border:   #2a2820;
+      --green:    #2e7d4f;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+
+    /* TOPBAR */
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 40px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+    .topbar-actions a { margin-left: 20px; color: var(--gold); font-weight: 500; letter-spacing: .06em; font-size: 12px; text-transform: uppercase; }
+    .topbar-actions a:hover { color: var(--text); }
+
+    /* MASTHEAD */
+    .masthead { text-align: center; padding: 36px 20px 24px; border-bottom: 1px solid var(--border); }
+    .masthead img { height: 90px; width: auto; }
+    .masthead .tagline { margin-top: 8px; font-size: 11px; letter-spacing: .3em; color: var(--muted); text-transform: uppercase; }
+
+    /* NAV */
+    nav { display: flex; justify-content: center; border-bottom: 1px solid var(--border); background: var(--bg); }
+    nav a { padding: 14px 28px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); transition: color .2s; position: relative; }
+    nav a:hover { color: var(--gold); }
+    nav a.active { color: var(--gold); }
+    nav a.active::after { content: ''; position: absolute; bottom: 0; left: 20px; right: 20px; height: 2px; background: var(--gold); }
+
+    /* PAGE HEADER */
+    .page-header { max-width: 860px; margin: 48px auto 0; padding: 0 20px 32px; border-bottom: 1px solid var(--border); }
+    .page-header .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 52px); font-weight: 900; color: var(--text); line-height: 1.1; margin-bottom: 14px; }
+    .page-header p { font-family: 'EB Garamond', serif; font-size: 18px; color: var(--muted); line-height: 1.7; }
+    .page-header .assinante-badge { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; padding: 8px 18px; border: 1px solid var(--gold-dim); font-size: 11px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); }
+
+    /* LISTA */
+    .artigos-wrap { max-width: 860px; margin: 0 auto; padding: 0 20px 80px; }
+
+    .artigo-item { border-bottom: 1px solid var(--border); padding: 28px 0; }
+    .artigo-item:hover .artigo-titulo { color: var(--gold); }
+
+    .artigo-meta { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; flex-wrap: wrap; }
+    .artigo-num { font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+    .artigo-data { font-size: 12px; color: var(--muted); }
+    .artigo-badge { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; padding: 2px 10px; border: 1px solid var(--gold-dim); color: var(--gold-dim); }
+    .artigo-categoria { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; padding: 2px 10px; background: var(--green); color: #fff; }
+
+    .artigo-titulo { font-family: 'Playfair Display', serif; font-size: clamp(18px, 3vw, 24px); font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 10px; transition: color .2s; cursor: pointer; }
+    .artigo-resumo { font-family: 'EB Garamond', serif; font-size: 16px; color: var(--muted); line-height: 1.65; margin-bottom: 14px; }
+    .artigo-acoes { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+    .btn-ler { display: inline-block; padding: 8px 20px; background: var(--gold); color: var(--bg); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; transition: background .2s; cursor: pointer; }
+    .btn-ler:hover { background: var(--text); }
+    .btn-assinar { display: inline-block; padding: 8px 20px; border: 1px solid var(--gold-dim); color: var(--gold); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; transition: all .2s; cursor: pointer; }
+    .btn-assinar:hover { background: var(--gold); color: var(--bg); }
+
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 1000; overflow-y: auto; padding: 40px 20px; }
+    .modal-overlay.open { display: block; }
+    .modal-box { max-width: 720px; margin: 0 auto; background: var(--bg2); border: 1px solid var(--border); padding: 48px 48px 56px; }
+    .modal-close { display: flex; justify-content: flex-end; margin-bottom: 24px; }
+    .modal-close button { background: none; border: 1px solid var(--border); color: var(--muted); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 16px; cursor: pointer; transition: color .2s, border-color .2s; }
+    .modal-close button:hover { color: var(--gold); border-color: var(--gold-dim); }
+    .modal-tag { font-size: 10px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .modal-titulo { font-family: 'Playfair Display', serif; font-size: clamp(24px, 4vw, 36px); font-weight: 900; color: var(--text); line-height: 1.2; margin-bottom: 10px; }
+    .modal-meta { font-size: 12px; color: var(--muted); margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .modal-body { font-family: 'EB Garamond', serif; font-size: 18px; line-height: 1.85; color: var(--text); }
+    .modal-body p { margin-bottom: 20px; }
+    .modal-body h3 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); margin: 28px 0 12px; }
+
+    /* PAYWALL */
+    .paywall-fade { position: relative; max-height: 180px; overflow: hidden; }
+    .paywall-fade::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 120px; background: linear-gradient(transparent, var(--bg2)); }
+
+    .paywall-box { margin-top: 32px; padding: 36px 32px; border: 1px solid var(--gold-dim); text-align: center; background: var(--bg3); }
+    .paywall-box .lock { font-size: 28px; margin-bottom: 14px; }
+    .paywall-box h3 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--gold); margin-bottom: 10px; }
+    .paywall-box p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 22px; }
+    .paywall-box .btn-ler { display: inline-block; margin-bottom: 10px; padding: 12px 32px; font-size: 12px; }
+    .paywall-box .paywall-price { font-size: 12px; color: var(--muted); }
+    .paywall-box .paywall-benefits { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 22px; }
+    .paywall-box .benefit { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .paywall-box .benefit::before { content: '✓'; color: var(--gold); font-weight: 700; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; max-width: 1140px; margin: 0 auto; }
+    .footer-brand { font-family: 'Playfair Display', serif; font-size: 18px; letter-spacing: .15em; color: var(--gold); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-bottom { text-align: center; padding: 16px 20px 28px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); max-width: 1140px; margin: 0 auto; }
+
+    @media (max-width: 600px) {
+      .topbar { padding: 10px 20px; }
+      nav a { padding: 12px 14px; font-size: 11px; }
+      .modal-box { padding: 28px 20px 36px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <span id="data-hoje"></span>
+    <div class="topbar-actions">
+      <a href="https://tingearth.substack.com/sign-in" target="_blank">Entrar</a>
+      <a href="https://tingearth.substack.com/subscribe" target="_blank">Assinar</a>
+    </div>
+  </div>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <a href="index.html"><img src="logo-tingearth.svg" alt="TING EARTH" /></a>
+    <p class="tagline">A Assembleia do Mundo Livre</p>
+  </header>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="tabula.html">Tabula</a>
+    <a href="rostrum.html" class="active">Rostrum</a>
+    <a href="bema.html">Bema</a>
+    <a href="loja.html">Loja</a>
+    <a href="https://t.me" target="_blank">Canal VIP</a>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="section-tag">Rostrum — Análise Exclusiva</div>
+    <h1>O que está por trás<br>das manchetes</h1>
+    <p>Análises profundas, sem pressa e sem achismo. O Rostrum vai além da notícia — investiga os bastidores, os interesses e o que realmente está em jogo.</p>
+    <div class="assinante-badge">🔒 Exclusivo para assinantes</div>
+  </div>
+
+  <!-- LISTA DE ARTIGOS -->
+  <div class="artigos-wrap">
+
+    <div class="artigo-item">
+      <div class="artigo-meta">
+        <span class="artigo-num">Rostrum · 003</span>
+        <span class="artigo-data">25 de junho de 2026</span>
+        <span class="artigo-badge">Assinantes</span>
+        <span class="artigo-categoria">Política</span>
+      </div>
+      <div class="artigo-titulo" onclick="abrirModal('r003')">O que ninguém está explicando sobre as eleições de 2026</div>
+      <div class="artigo-resumo">A disputa vai muito além dos candidatos. Entenda os bastidores, os financiadores e o que realmente está em jogo para os próximos quatro anos.</div>
+      <div class="artigo-acoes">
+        <span class="btn-ler" onclick="abrirModal('r003')">Ler análise</span>
+      </div>
+    </div>
+
+    <div class="artigo-item">
+      <div class="artigo-meta">
+        <span class="artigo-num">Rostrum · 002</span>
+        <span class="artigo-data">24 de junho de 2026</span>
+        <span class="artigo-badge">Assinantes</span>
+        <span class="artigo-categoria">Política</span>
+      </div>
+      <div class="artigo-titulo" onclick="abrirModal('r002')">Tecnologia e vigilância: a pauta que os candidatos evitam</div>
+      <div class="artigo-resumo">Por que nenhum candidato de peso quer falar sobre o uso de dados pessoais em campanhas políticas? A resposta revela muito sobre quem financia a corrida eleitoral.</div>
+      <div class="artigo-acoes">
+        <span class="btn-ler" onclick="abrirModal('r002')">Ler análise</span>
+      </div>
+    </div>
+
+    <div class="artigo-item">
+      <div class="artigo-meta">
+        <span class="artigo-num">Rostrum · 001</span>
+        <span class="artigo-data">23 de junho de 2026</span>
+        <span class="artigo-badge">Assinantes</span>
+        <span class="artigo-categoria">Economia</span>
+      </div>
+      <div class="artigo-titulo" onclick="abrirModal('r001')">O dólar, o ministério e o silêncio que o mercado não aguenta</div>
+      <div class="artigo-resumo">A declaração do ministério que moveu o câmbio não foi um acidente. Entenda o que está por trás do ruído e o que os grandes investidores já sabem que você não sabe.</div>
+      <div class="artigo-acoes">
+        <span class="btn-ler" onclick="abrirModal('r001')">Ler análise</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal" onclick="fecharModalFora(event)">
+    <div class="modal-box">
+      <div class="modal-close"><button onclick="fecharModal()">✕ Fechar</button></div>
+      <div class="modal-tag" id="modal-tag"></div>
+      <div class="modal-titulo" id="modal-titulo"></div>
+      <div class="modal-meta" id="modal-meta"></div>
+
+      <!-- TRECHO VISÍVEL -->
+      <div class="paywall-fade">
+        <div class="modal-body" id="modal-trecho"></div>
+      </div>
+
+      <!-- PAYWALL -->
+      <div class="paywall-box">
+        <div class="lock">🔒</div>
+        <h3>Esta análise é exclusiva para assinantes</h3>
+        <p>Assine o TING EARTH e acesse todas as análises do Rostrum, o Canal VIP no Telegram e o boletim diário completo.</p>
+        <div class="paywall-benefits">
+          <span class="benefit">Rostrum completo</span>
+          <span class="benefit">Canal VIP Telegram</span>
+          <span class="benefit">Tabula diária</span>
+          <span class="benefit">Cancele quando quiser</span>
+        </div>
+        <a class="btn-ler" href="https://tingearth.substack.com/subscribe" target="_blank">Assinar agora</a>
+        <div class="paywall-price">A partir de R$ 19,90/mês</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">TING·EARTH</div>
+    <div class="footer-links">
+      <a href="#">Sobre</a>
+      <a href="#">Contato</a>
+      <a href="#">Termos</a>
+      <a href="https://t.me" target="_blank">Telegram</a>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    © 2026 TING EARTH — A Assembleia do Mundo Livre. Todos os direitos reservados.
+  </div>
+
+  <script>
+    const dias = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+    const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    const hoje = new Date();
+    document.getElementById('data-hoje').textContent =
+      `${dias[hoje.getDay()]}, ${hoje.getDate()} de ${meses[hoje.getMonth()]} de ${hoje.getFullYear()}`;
+
+    const artigos = {
+      r003: {
+        tag: 'Rostrum · Análise Exclusiva · 003',
+        titulo: 'O que ninguém está explicando sobre as eleições de 2026',
+        meta: '25 de junho de 2026 · Política',
+        trecho: `<p>A disputa eleitoral de 2026 já começou — mas não nos palanques. Ela acontece nos bastidores dos grandes grupos econômicos, nas reuniões fechadas de partidos que ainda nem anunciaram candidatos, e nos escritórios de advocacia que redigem as regras do financiamento de campanha.</p><p>O que a imprensa convencional está cobrindo são os personagens. O que ninguém está explicando são as forças por trás deles. E é exatamente essa diferença que define quem vai governar o Brasil nos próximos quatro anos...</p>`
+      },
+      r002: {
+        tag: 'Rostrum · Análise Exclusiva · 002',
+        titulo: 'Tecnologia e vigilância: a pauta que os candidatos evitam',
+        meta: '24 de junho de 2026 · Política',
+        trecho: `<p>Há uma pergunta que nenhum jornalista fez nos últimos debates e que nenhum candidato de peso quer responder: quem tem acesso aos seus dados pessoais durante uma campanha eleitoral?</p><p>A resposta é desconfortável — e revela uma indústria bilionária de microtargeting político que opera nas sombras, fora do radar do TSE e da opinião pública...</p>`
+      },
+      r001: {
+        tag: 'Rostrum · Análise Exclusiva · 001',
+        titulo: 'O dólar, o ministério e o silêncio que o mercado não aguenta',
+        meta: '23 de junho de 2026 · Economia',
+        trecho: `<p>Na tarde de terça-feira, uma declaração aparentemente técnica do ministério da Fazenda fez o dólar saltar 1,2% em menos de quarenta minutos. Os noticiários cobriram o efeito. Ninguém explicou a causa real.</p><p>O que aconteceu não foi um erro de comunicação. Foi um sinal deliberado para um grupo específico de investidores institucionais que acompanham de perto o calendário de decisões do governo...</p>`
+      }
+    };
+
+    function abrirModal(id) {
+      const art = artigos[id];
+      document.getElementById('modal-tag').textContent = art.tag;
+      document.getElementById('modal-titulo').textContent = art.titulo;
+      document.getElementById('modal-meta').textContent = art.meta;
+      document.getElementById('modal-trecho').innerHTML = art.trecho;
+      document.getElementById('modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function fecharModal() {
+      document.getElementById('modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function fecharModalFora(e) {
+      if (e.target === document.getElementById('modal')) fecharModal();
+    }
+  </script>
+
+</body>
+</html>
