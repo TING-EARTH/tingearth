@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bema — TING EARTH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=EB+Garamond:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f0f0f;
+      --bg2:      #161616;
+      --bg3:      #1e1e1e;
+      --gold:     #c8a96e;
+      --gold-dim: #9a7d4e;
+      --text:     #e8e0d0;
+      --muted:    #888070;
+      --border:   #2a2820;
+      --urgente:  #c0392b;
+      --urgente2: #922b21;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+
+    /* TOPBAR */
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 40px; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+    .topbar-actions a { margin-left: 20px; color: var(--gold); font-weight: 500; letter-spacing: .06em; font-size: 12px; text-transform: uppercase; }
+    .topbar-actions a:hover { color: var(--text); }
+
+    /* MASTHEAD */
+    .masthead { text-align: center; padding: 36px 20px 24px; border-bottom: 1px solid var(--border); }
+    .masthead img { height: 90px; width: auto; }
+    .masthead .tagline { margin-top: 8px; font-size: 11px; letter-spacing: .3em; color: var(--muted); text-transform: uppercase; }
+
+    /* NAV */
+    nav { display: flex; justify-content: center; border-bottom: 1px solid var(--border); background: var(--bg); }
+    nav a { padding: 14px 28px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); transition: color .2s; position: relative; }
+    nav a:hover { color: var(--gold); }
+    nav a.active { color: var(--gold); }
+    nav a.active::after { content: ''; position: absolute; bottom: 0; left: 20px; right: 20px; height: 2px; background: var(--gold); }
+
+    /* PAGE HEADER */
+    .page-header { max-width: 860px; margin: 48px auto 0; padding: 0 20px 32px; border-bottom: 1px solid var(--border); }
+    .page-header .section-tag { font-size: 11px; font-weight: 600; letter-spacing: .25em; text-transform: uppercase; color: var(--urgente); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .page-header .section-tag::before { content: '⚡'; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 52px); font-weight: 900; color: var(--text); line-height: 1.1; margin-bottom: 14px; }
+    .page-header p { font-family: 'EB Garamond', serif; font-size: 18px; color: var(--muted); line-height: 1.7; }
+
+    /* FILTROS */
+    .filtros { max-width: 860px; margin: 24px auto 0; padding: 0 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .filtro-btn { padding: 6px 18px; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; border: 1px solid var(--border); color: var(--muted); background: none; cursor: pointer; transition: all .2s; }
+    .filtro-btn:hover, .filtro-btn.ativo { border-color: var(--gold-dim); color: var(--gold); }
+    .filtro-btn.urgente-btn:hover, .filtro-btn.urgente-btn.ativo { border-color: var(--urgente); color: var(--urgente); }
+
+    /* LISTA */
+    .alertas-wrap { max-width: 860px; margin: 0 auto; padding: 8px 20px 80px; }
+
+    .alerta-item { border-bottom: 1px solid var(--border); padding: 24px 0; display: flex; gap: 20px; cursor: pointer; }
+    .alerta-item:hover .alerta-titulo { color: var(--gold); }
+
+    .alerta-esquerda { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 48px; padding-top: 4px; }
+    .alerta-hora { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.3; }
+    .alerta-linha { flex: 1; width: 1px; background: var(--border); min-height: 20px; }
+
+    .alerta-direita { flex: 1; }
+    .alerta-badges { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+    .badge-urgente { font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; padding: 2px 10px; background: var(--urgente); color: #fff; display: flex; align-items: center; gap: 4px; }
+    .badge-urgente::before { content: '⚡'; font-size: 9px; }
+    .badge-normal { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; padding: 2px 10px; border: 1px solid var(--border); color: var(--gold); }
+    .badge-categoria { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: 2px 10px; border: 1px solid var(--border); color: var(--muted); }
+
+    .alerta-titulo { font-family: 'Playfair Display', serif; font-size: clamp(17px, 2.5vw, 22px); font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 8px; transition: color .2s; }
+    .alerta-resumo { font-family: 'EB Garamond', serif; font-size: 15px; color: var(--muted); line-height: 1.6; }
+
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 1000; overflow-y: auto; padding: 40px 20px; }
+    .modal-overlay.open { display: block; }
+    .modal-box { max-width: 720px; margin: 0 auto; background: var(--bg2); border: 1px solid var(--border); padding: 48px 48px 56px; }
+    .modal-close { display: flex; justify-content: flex-end; margin-bottom: 24px; }
+    .modal-close button { background: none; border: 1px solid var(--border); color: var(--muted); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 16px; cursor: pointer; transition: color .2s, border-color .2s; }
+    .modal-close button:hover { color: var(--gold); border-color: var(--gold-dim); }
+    .modal-badges { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+    .modal-titulo { font-family: 'Playfair Display', serif; font-size: clamp(22px, 4vw, 34px); font-weight: 900; color: var(--text); line-height: 1.2; margin-bottom: 10px; }
+    .modal-meta { font-size: 12px; color: var(--muted); margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .modal-body { font-family: 'EB Garamond', serif; font-size: 18px; line-height: 1.85; color: var(--text); }
+    .modal-body p { margin-bottom: 20px; }
+    .modal-body h3 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--gold); margin: 28px 0 12px; }
+    .modal-rostrum { margin-top: 28px; padding: 20px; border: 1px solid var(--gold-dim); background: var(--bg3); }
+    .modal-rostrum p { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+    .btn-rostrum { display: inline-block; padding: 8px 20px; border: 1px solid var(--gold-dim); color: var(--gold); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; transition: all .2s; }
+    .btn-rostrum:hover { background: var(--gold); color: var(--bg); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; max-width: 1140px; margin: 0 auto; }
+    .footer-brand { font-family: 'Playfair Display', serif; font-size: 18px; letter-spacing: .15em; color: var(--gold); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-bottom { text-align: center; padding: 16px 20px 28px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); max-width: 1140px; margin: 0 auto; }
+
+    @media (max-width: 600px) {
+      .topbar { padding: 10px 20px; }
+      nav a { padding: 12px 14px; font-size: 11px; }
+      .modal-box { padding: 28px 20px 36px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+      .alerta-esquerda { min-width: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <span id="data-hoje"></span>
+    <div class="topbar-actions">
+      <a href="https://tingearth.substack.com/sign-in" target="_blank">Entrar</a>
+      <a href="https://tingearth.substack.com/subscribe" target="_blank">Assinar</a>
+    </div>
+  </div>
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <a href="index.html"><img src="logo-tingearth.svg" alt="TING EARTH" /></a>
+    <p class="tagline">A Assembleia do Mundo Livre</p>
+  </header>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="tabula.html">Tabula</a>
+    <a href="rostrum.html">Rostrum</a>
+    <a href="bema.html" class="active">Bema</a>
+    <a href="loja.html">Loja</a>
+    <a href="https://t.me" target="_blank">Canal VIP</a>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="section-tag">Bema — Alertas e Breaking News</div>
+    <h1>O que está<br>acontecendo agora</h1>
+    <p>Alertas urgentes e breaking news em tempo real. Quando algo importante acontece, o Bema é o primeiro a informar.</p>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filtros">
+    <button class="filtro-btn ativo" onclick="filtrar('todos', this)">Todos</button>
+    <button class="filtro-btn urgente-btn" onclick="filtrar('urgente', this)">⚡ Urgentes</button>
+    <button class="filtro-btn" onclick="filtrar('politica', this)">Política</button>
+    <button class="filtro-btn" onclick="filtrar('economia', this)">Economia</button>
+    <button class="filtro-btn" onclick="filtrar('eleicoes', this)">Eleições</button>
+  </div>
+
+  <!-- LISTA DE ALERTAS -->
+  <div class="alertas-wrap" id="alertas-lista">
+
+    <div class="alerta-item" data-categoria="urgente politica eleicoes" onclick="abrirModal('b005')">
+      <div class="alerta-esquerda">
+        <span class="alerta-hora">Hoje<br>11h32</span>
+        <div class="alerta-linha"></div>
+      </div>
+      <div class="alerta-direita">
+        <div class="alerta-badges">
+          <span class="badge-urgente">Urgente</span>
+          <span class="badge-categoria">Eleições</span>
+        </div>
+        <div class="alerta-titulo">TSE confirma datas do calendário eleitoral para outubro de 2026</div>
+        <div class="alerta-resumo">Tribunal define prazos para registro de candidaturas, início da propaganda e data do primeiro turno.</div>
+      </div>
+    </div>
+
+    <div class="alerta-item" data-categoria="politica eleicoes" onclick="abrirModal('b004')">
+      <div class="alerta-esquerda">
+        <span class="alerta-hora">Hoje<br>09h47</span>
+        <div class="alerta-linha"></div>
+      </div>
+      <div class="alerta-direita">
+        <div class="alerta-badges">
+          <span class="badge-normal">Bema</span>
+          <span class="badge-categoria">Política</span>
+        </div>
+        <div class="alerta-titulo">Novo partido oficializa candidatura à presidência com nome surpresa</div>
+        <div class="alerta-resumo">Legenda surpreende ao anunciar nome pouco conhecido nacionalmente como candidato ao Planalto.</div>
+      </div>
+    </div>
+
+    <div class="alerta-item" data-categoria="urgente politica" onclick="abrirModal('b003')">
+      <div class="alerta-esquerda">
+        <span class="alerta-hora">Ontem<br>16h15</span>
+        <div class="alerta-linha"></div>
+      </div>
+      <div class="alerta-direita">
+        <div class="alerta-badges">
+          <span class="badge-urgente">Urgente</span>
+          <span class="badge-categoria">Política</span>
+        </div>
+        <div class="alerta-titulo">Câmara aprova projeto polêmico em votação apertada</div>
+        <div class="alerta-resumo">Proposta aprovada por margem mínima divide juristas e movimentos sociais. Análise completa no Rostrum.</div>
+      </div>
+    </div>
+
+    <div class="alerta-item" data-categoria="economia" onclick="abrirModal('b002')">
+      <div class="alerta-esquerda">
+        <span class="alerta-hora">Ontem<br>14h08</span>
+        <div class="alerta-linha"></div>
+      </div>
+      <div class="alerta-direita">
+        <div class="alerta-badges">
+          <span class="badge-normal">Bema</span>
+          <span class="badge-categoria">Economia</span>
+        </div>
+        <div class="alerta-titulo">Dólar sobe 1,2% após declarações do ministério da Fazenda</div>
+        <div class="alerta-resumo">Moeda americana reage a sinalização sobre política fiscal. Mercado aguarda esclarecimentos para amanhã.</div>
+      </div>
+    </div>
+
+    <div class="alerta-item" data-categoria="politica" onclick="abrirModal('b001')">
+      <div class="alerta-esquerda">
+        <span class="alerta-hora">23/06<br>10h00</span>
+        <div class="alerta-linha"></div>
+      </div>
+      <div class="alerta-direita">
+        <div class="alerta-badges">
+          <span class="badge-normal">Bema</span>
+          <span class="badge-categoria">Política</span>
+        </div>
+        <div class="alerta-titulo">STF retoma julgamento sobre responsabilidade das redes sociais</div>
+        <div class="alerta-resumo">Caso pode definir os limites da liberdade de expressão digital no Brasil e impactar diretamente as eleições.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal" onclick="fecharModalFora(event)">
+    <div class="modal-box">
+      <div class="modal-close"><button onclick="fecharModal()">✕ Fechar</button></div>
+      <div class="modal-badges" id="modal-badges"></div>
+      <div class="modal-titulo" id="modal-titulo"></div>
+      <div class="modal-meta" id="modal-meta"></div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-rostrum" id="modal-rostrum" style="display:none">
+        <p>📋 Este tema tem análise aprofundada no Rostrum de hoje.</p>
+        <a class="btn-rostrum" href="rostrum.html">Ver análise no Rostrum</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">TING·EARTH</div>
+    <div class="footer-links">
+      <a href="#">Sobre</a>
+      <a href="#">Contato</a>
+      <a href="#">Termos</a>
+      <a href="https://t.me" target="_blank">Telegram</a>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    © 2026 TING EARTH — A Assembleia do Mundo Livre. Todos os direitos reservados.
+  </div>
+
+  <script>
+    const dias = ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+    const meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    const hoje = new Date();
+    document.getElementById('data-hoje').textContent =
+      `${dias[hoje.getDay()]}, ${hoje.getDate()} de ${meses[hoje.getMonth()]} de ${hoje.getFullYear()}`;
+
+    const alertas = {
+      b005: {
+        badges: '<span class="badge-urgente">Urgente</span><span class="badge-categoria">Eleições</span>',
+        titulo: 'TSE confirma datas do calendário eleitoral para outubro de 2026',
+        meta: 'Hoje, 11h32 · Eleições 2026',
+        body: `<p>O Tribunal Superior Eleitoral confirmou nesta manhã o calendário oficial das eleições de outubro de 2026, definindo os prazos para registro de candidaturas, início da propaganda eleitoral e datas do primeiro e segundo turnos.</p><p>Segundo o TSE, o registro de candidaturas deverá ocorrer entre os dias 15 e 30 de julho. A propaganda eleitoral no rádio e na televisão começa oficialmente em 15 de agosto. O primeiro turno está marcado para o dia 4 de outubro e o segundo turno, caso necessário, para 25 de outubro.</p><p>A confirmação do calendário encerra um período de incerteza que havia gerado especulações sobre eventual adiamento das eleições — rumores desmentidos pelo presidente do TSE em coletiva de imprensa.</p>`,
+        rostrum: false
+      },
+      b004: {
+        badges: '<span class="badge-normal">Bema</span><span class="badge-categoria">Política</span>',
+        titulo: 'Novo partido oficializa candidatura à presidência com nome surpresa',
+        meta: 'Hoje, 09h47 · Política',
+        body: `<p>Em convenção realizada na manhã desta quarta-feira, uma nova legenda oficializou a candidatura de um nome pouco conhecido do grande público à presidência da República nas eleições de outubro de 2026.</p><p>A escolha surpreendeu analistas políticos, que esperavam o partido apoiar uma candidatura já consolidada nas pesquisas. A entrada na corrida presidencial pode redistribuir votos em estados do nordeste e do centro-oeste, regiões onde o partido tem presença mais forte.</p><p>Especialistas consultados pelo TING EARTH avaliam que a candidatura tem potencial para complicar os planos de ao menos dois dos principais candidatos nas pesquisas de intenção de voto.</p>`,
+        rostrum: false
+      },
+      b003: {
+        badges: '<span class="badge-urgente">Urgente</span><span class="badge-categoria">Política</span>',
+        titulo: 'Câmara aprova projeto polêmico em votação apertada',
+        meta: 'Ontem, 16h15 · Política',
+        body: `<p>A Câmara dos Deputados aprovou na tarde de ontem, por margem mínima de votos, um projeto que divide profundamente a opinião de juristas, movimentos sociais e especialistas em direito constitucional.</p><p>A proposta, que tramitava há mais de um ano na Casa, passou por 287 votos a favor e 274 contra — a menor margem de aprovação registrada nesta legislatura. O projeto segue agora para o Senado Federal.</p><p>Organizações da sociedade civil já anunciaram que vão acionar o Supremo Tribunal Federal questionando a constitucionalidade da medida.</p>`,
+        rostrum: true
+      },
+      b002: {
+        badges: '<span class="badge-normal">Bema</span><span class="badge-categoria">Economia</span>',
+        titulo: 'Dólar sobe 1,2% após declarações do ministério da Fazenda',
+        meta: 'Ontem, 14h08 · Economia',
+        body: `<p>O dólar americano subiu 1,2% na tarde de ontem, encerrando o pregão cotado a R$ 5,47, após declarações do ministério da Fazenda que geraram incerteza nos mercados financeiros sobre a trajetória da política fiscal do governo.</p><p>O movimento foi considerado atípico por operadores de câmbio, que apontam que a reação do mercado foi desproporcional ao conteúdo das declarações — sinal de que há nervosismo acumulado em relação ao cenário eleitoral.</p><p>O ministério não se pronunciou sobre a oscilação cambial até o fechamento desta edição. Analistas esperam uma nota de esclarecimento ainda esta semana.</p>`,
+        rostrum: false
+      },
+      b001: {
+        badges: '<span class="badge-normal">Bema</span><span class="badge-categoria">Política</span>',
+        titulo: 'STF retoma julgamento sobre responsabilidade das redes sociais',
+        meta: '23 de junho, 10h00 · Política',
+        body: `<p>O Supremo Tribunal Federal retomou nesta semana o julgamento que pode definir os limites da responsabilidade das plataformas digitais — como Facebook, X e YouTube — por conteúdos publicados por usuários no Brasil.</p><p>O caso é considerado um dos mais importantes para a liberdade de expressão online no país. Se o STF decidir que as plataformas podem ser responsabilizadas por conteúdos de terceiros, as empresas terão de revisar profundamente suas políticas de moderação no Brasil.</p><p>O timing do julgamento, a poucos meses das eleições de outubro, adiciona uma camada política ao debate. Candidatos e partidos têm acompanhado de perto o andamento do processo.</p>`,
+        rostrum: false
+      }
+    };
+
+    function abrirModal(id) {
+      const al = alertas[id];
+      document.getElementById('modal-badges').innerHTML = al.badges;
+      document.getElementById('modal-titulo').textContent = al.titulo;
+      document.getElementById('modal-meta').textContent = al.meta;
+      document.getElementById('modal-body').innerHTML = al.body;
+      document.getElementById('modal-rostrum').style.display = al.rostrum ? 'block' : 'none';
+      document.getElementById('modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function fecharModal() {
+      document.getElementById('modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function fecharModalFora(e) {
+      if (e.target === document.getElementById('modal')) fecharModal();
+    }
+
+    function filtrar(cat, btn) {
+      document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('ativo'));
+      btn.classList.add('ativo');
+      document.querySelectorAll('.alerta-item').forEach(item => {
+        if (cat === 'todos' || item.dataset.categoria.includes(cat)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
